@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Financier – Track Transactions</title>
+  <style>
+    /* RESET & BASE STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: #0F1114;
+      color: #FFFFFF;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+    }
+
+    /* LAYOUT */
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px;
+      background-color: #181A1E;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+    }
+    .sidebar h2 {
+      margin-bottom: 1.8rem;
+      font-size: 1.8rem;
+      color: #FFFFFF;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 0;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-bottom: 0.5rem;
+    }
+    .nav-item:hover {
+      background-color: #24272B;
+    }
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+      color: #E5E5E5;
+    }
+    .nav-text {
+      font-size: 0.9rem;
+    }
+    .sidebar-buttons {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .btn-secondary {
+      background-color: #2D2F34;
+      color: #FFFFFF;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+      text-align: center;
+    }
+    .btn-secondary:hover {
+      background-color: #3A3D42;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    .content-wrapper {
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    /* PAGE TITLE */
+    .page-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* QUICK ACTIONS */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    @media (min-width: 768px) {
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .action-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #181A1E;
+      border: 1px solid #2D2F34;
+      border-radius: 6px;
+      padding: 1rem;
+      transition: border-color 0.2s ease;
+    }
+    .action-card:hover {
+      border-color: #3B82F6;
+    }
+    .action-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .icon-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+    }
+    .action-label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+    .action-right svg {
+      width: 20px;
+      height: 20px;
+      color: #B0B0B0;
+    }
+
+    /* WEEK CARD STYLES */
+    .week-card {
+      background-color: #181A1E;
+      border: 1px solid #2D2F34;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .week-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    #weekHeading {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+    .arrow-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+    .arrow-btn:hover {
+      color: #3B82F6;
+    }
+
+    /* TRANSACTIONS GRID */
+    .transactions-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    @media (min-width: 768px) {
+      .transactions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .transactions-column h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .transaction-card {
+      background-color: #181A1E;
+      border: 1px solid #2D2F34;
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .transaction-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .transaction-left h4 {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .transaction-left p {
+      font-size: 0.8rem;
+      color: #A3A3A3;
+    }
+    .transaction-date {
+      font-size: 0.8rem;
+      color: #CCCCCC;
+    }
+    .transaction-right-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .transaction-amount {
+      font-weight: 500;
+    }
+    .negative {
+      color: #F87171;
+    }
+    .positive {
+      color: #34D399;
+    }
+    .transaction-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .icon-btn {
+      cursor: pointer;
+      color: #9CA3AF;
+      transition: color 0.2s ease;
+    }
+    .icon-btn:hover {
+      color: #FFFFFF;
+    }
+    .icon-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* MEAL PLANNING */
+    .meal-planning {
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .meal-planning h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .meal-card {
+      background-color: #181A1E;
+      border: 1px solid #2D2F34;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .meal-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .meal-category, .meal-description {
+      font-size: 0.9rem;
+      color: #A3A3A3;
+      margin-bottom: 0.5rem;
+      white-space: pre-wrap;
+    }
+    .btn-meal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #3B82F6;
+      color: #FFFFFF;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+      margin-top: 0.5rem;
+    }
+    .btn-meal:hover {
+      background-color: #2042aa;
+    }
+    .btn-deduction {
+      background-color: #dd524c !important;
+      color: #FFFFFF !important;
+    }
+    .meal-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .meal-actions .icon-btn {
+      background-color: #2D2F34;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+    }
+    #btnAddMealPlan {
+      background-color: #2042aa;
+      color: #FFFFFF;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed; 
+      z-index: 100; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background-color: #181A1E;
+      margin: 10% auto; 
+      padding: 20px;
+      border: 1px solid #2D2F34;
+      border-radius: 6px;
+      width: 90%;
+      max-width: 600px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* ICONS*/
+    svg.icon {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        justify-content: flex-start;
+      }
+      .sidebar-buttons {
+        margin-top: 1rem;
+        flex-direction: row;
+      }
+      .nav-item {
+        margin-right: 1rem;
+      }
+      .main-content {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+ <!-- SIDEBAR -->
+ <div class="sidebar">
+  <h2>Financier</h2>
+  <div class="nav-item">
+    <a href="Goals &amp; Categories.html" style="display: flex; align-items: center;">
+      <svg viewBox="0 0 24 24" width="24" height="24" preserveAspectRatio="xMidYMid meet">
+        <path d="M9.96094 19.9219C15.459 19.9219 19.9219 15.459 19.9219 9.96094C19.9219 4.46289 15.459 0 9.96094 0C4.46289 0 0 4.46289 0 9.96094C0 15.459 4.46289 19.9219 9.96094 19.9219ZM9.96094 18.2617C5.37109 18.2617 1.66016 14.5508 1.66016 9.96094C1.66016 5.37109 5.37109 1.66016 9.96094 1.66016C14.5508 1.66016 18.2617 5.37109 18.2617 9.96094C18.2617 14.5508 14.5508 18.2617 9.96094 18.2617Z" fill="#508de6"/>
+        <path d="M9.96094 16.1523C13.3789 16.1523 16.1523 13.3789 16.1523 9.96094C16.1523 6.54297 13.3789 3.76953 9.96094 3.76953C6.54297 3.76953 3.76953 6.54297 3.76953 9.96094C3.76953 13.3789 6.54297 16.1523 9.96094 16.1523ZM9.96094 14.5801C7.40234 14.5801 5.3418 12.5195 5.3418 9.96094C5.3418 7.40234 7.40234 5.3418 9.96094 5.3418C12.5195 5.3418 14.5801 7.40234 14.5801 9.96094C14.5801 12.5195 12.5195 14.5801 9.96094 14.5801Z" fill="#508de6"/>
+        <path d="M9.96094 12.4805C11.3574 12.4805 12.4902 11.3574 12.4902 9.95117C12.4902 8.55469 11.3574 7.42188 9.96094 7.42188C8.56445 7.42188 7.43164 8.55469 7.43164 9.95117C7.43164 11.3574 8.56445 12.4805 9.96094 12.4805Z" fill="#508de6"/>
+      </svg>
+      <span class="nav-text">Goals &amp; Categories</span>
+    </a>
+  </div>
+  <div class="nav-item">
+    <a href="Track Transactions.html" style="display: flex; align-items: center;">
+      <svg viewBox="0 0 24 24">
+        <path d="M1.29883 18.5156L20.5078 18.5156L20.5078 17.8613C20.5078 17.4707 20.2832 17.2363 19.8828 17.2363L19.2578 17.2363L19.2578 6.69922L20.1172 6.69922C20.6543 6.69922 20.9668 6.30859 20.9668 5.9082C20.9668 5.61523 20.8008 5.36133 20.4395 5.15625L12.0996 0.341797C11.709 0.117188 11.2988 0 10.8984 0C10.498 0 10.0781 0.117188 9.70703 0.341797L1.36719 5.15625C0.996094 5.36133 0.839844 5.61523 0.839844 5.9082C0.839844 6.30859 1.15234 6.69922 1.68945 6.69922L2.54883 6.69922L2.54883 17.2363L1.93359 17.2363C1.5332 17.2363 1.29883 17.4707 1.29883 17.8613ZM4.02344 17.2363L4.02344 5.44922L10.5176 1.80664C10.6348 1.73828 10.7715 1.69922 10.8984 1.69922C11.0254 1.69922 11.1621 1.73828 11.2891 1.80664L17.7832 5.44922L17.7832 17.2363ZM0.78125 20.8398L21.0156 20.8398C21.4453 20.8398 21.8066 20.4785 21.8066 20.0488C21.8066 19.6191 21.4453 19.2676 21.0156 19.2676L0.78125 19.2676C0.351562 19.2676 0 19.6191 0 20.0488C0 20.4785 0.351562 20.8398 0.78125 20.8398Z" fill="#508de6"/>
+        <path d="M10.918 14.541C12.5781 14.541 14.043 13.7793 14.043 12.0996C14.043 10.625 12.8613 10.0586 11.5234 9.74609L10.5957 9.53125C9.74609 9.33594 9.02344 8.97461 9.02344 8.17383C9.02344 7.24609 10.0195 6.83594 10.918 6.83594C11.8945 6.83594 12.5586 7.25586 12.8223 8.06641C12.9199 8.36914 13.1055 8.51562 13.3691 8.51562C13.6133 8.51562 13.8965 8.34961 13.8965 8.00781C13.8965 6.75781 12.2949 5.86914 10.918 5.86914C9.3457 5.86914 7.92969 6.74805 7.92969 8.26172C7.92969 9.7168 9.15039 10.2637 10.3516 10.5566L11.2891 10.7715C12.1582 10.9766 12.959 11.2891 12.959 12.1875C12.959 13.252 11.9336 13.584 10.9473 13.584C9.90234 13.584 9.18945 13.252 8.83789 12.3145C8.7207 12.0117 8.55469 11.8945 8.29102 11.8945C8.00781 11.8945 7.77344 12.0801 7.77344 12.4023C7.77344 12.4902 7.79297 12.5977 7.82227 12.7051C8.20312 13.9941 9.63867 14.541 10.918 14.541ZM10.9082 15.7031C11.084 15.7031 11.2305 15.5566 11.2305 15.3809L11.2305 5.05859C11.2305 4.87305 11.084 4.73633 10.9082 4.73633C10.7324 4.73633 10.5859 4.87305 10.5859 5.05859L10.5859 15.3809C10.5859 15.5566 10.7324 15.7031 10.9082 15.7031Z" fill="#508de6"/>
+      </svg>
+      <span class="nav-text">Track Transactions</span>
+    </a>
+  </div>
+  <div class="nav-item">
+    <a href="Analytics.html" style="display: flex; align-items: center;">
+      <svg viewBox="0 0 24 24">
+        <path d="M0 17.2559C0 17.6953 0.361328 18.0371 0.78125 18.0371L20.9961 18.0371C21.4258 18.0371 21.7871 17.6953 21.7871 17.2559C21.7871 16.8262 21.4258 16.4746 20.9961 16.4746L0.78125 16.4746C0.361328 16.4746 0 16.8262 0 17.2559Z" fill="#508de6"/>
+        <path d="M16.7871 13.9941C16.7871 14.541 17.1289 14.8633 17.6953 14.8633L19.9512 14.8633C20.5078 14.8633 20.8594 14.541 20.8594 13.9941L20.8594 7.53906C20.8594 6.99219 20.5078 6.66016 19.9512 6.66016L17.6953 6.66016C17.1289 6.66016 16.7871 6.99219 16.7871 7.53906Z" fill="#508de6"/>
+        <path d="M11.4941 13.9941C11.4941 14.541 11.8457 14.8633 12.4023 14.8633L14.6582 14.8633C15.2246 14.8633 15.5762 14.541 15.5762 13.9941L15.5762 3.0957C15.5762 2.54883 15.2246 2.22656 14.6582 2.22656L12.4023 2.22656C11.8457 2.22656 11.4941 2.54883 11.4941 3.0957Z" fill="#508de6"/>
+        <path d="M6.21094 13.9941C6.21094 14.541 6.55273 14.8633 7.10938 14.8633L9.375 14.8633C9.93164 14.8633 10.2832 14.541 10.2832 13.9941L10.2832 0.869141C10.2832 0.322266 9.93164 0 9.375 0L7.10938 0C6.55273 0 6.21094 0.322266 6.21094 0.869141Z" fill="#508de6"/>
+        <path d="M0.917969 13.9941C0.917969 14.541 1.26953 14.8633 1.82617 14.8633L4.08203 14.8633C4.64844 14.8633 5 14.541 5 13.9941L5 5.35156C5 4.81445 4.64844 4.48242 4.08203 4.48242L1.82617 4.48242C1.26953 4.48242 0.917969 4.81445 0.917969 5.35156Z" fill="#508de6"/>
+      </svg>
+      <span class="nav-text">Analytics</span>
+    </a>
+  </div>
+  <div class="nav-item">
+    <a href="Calculator.html" style="display: flex; align-items: center;">
+      <svg viewBox="0 0 24 24">
+        <rect x="4" y="2" width="16" height="20" rx="2" fill="#508de6"/>
+        <rect x="5" y="3" width="14" height="18" rx="2" fill="#181A1E"/>
+        <path d="M9 6h6a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2z" fill="#508de6"/>
+        <circle cx="8" cy="10" r="1" fill="#508de6"/>
+        <circle cx="12" cy="10" r="1" fill="#508de6"/>
+        <circle cx="16" cy="10" r="1" fill="#508de6"/>
+        <circle cx="8" cy="14" r="1" fill="#508de6"/>
+        <circle cx="12" cy="14" r="1" fill="#508de6"/>
+        <rect x="15" y="13" width="2" height="6" rx="1" fill="#508de6"/>
+        <circle cx="8" cy="18" r="1" fill="#508de6"/>
+        <circle cx="12" cy="18" r="1" fill="#508de6"/>
+      </svg>
+      <span class="nav-text">Calculator</span>
+    </a>
+  </div>
+  <div class="nav-item">
+      <a href="Money Tips.html" style="display: flex; align-items: center;">
+        <svg viewBox="0 0 24 24">
+          <g transform="translate(6, 0)">
+            <path d="M0 6.01562C0 9.76562 2.24609 10.6934 2.87109 17.207C2.91016 17.5586 3.10547 17.7832 3.47656 17.7832L9.58984 17.7832C9.9707 17.7832 10.166 17.5586 10.2051 17.207C10.8301 10.6934 13.0664 9.76562 13.0664 6.01562C13.0664 2.64648 10.1855 0 6.5332 0C2.88086 0 0 2.64648 0 6.01562ZM1.47461 6.01562C1.47461 3.37891 3.78906 1.47461 6.5332 1.47461C9.27734 1.47461 11.5918 3.37891 11.5918 6.01562C11.5918 8.81836 9.73633 9.48242 8.85742 16.3086L4.21875 16.3086C3.33008 9.48242 1.47461 8.81836 1.47461 6.01562ZM3.44727 19.8926L9.62891 19.8926C9.95117 19.8926 10.1953 19.6387 10.1953 19.3164C10.1953 19.0039 9.95117 18.75 9.62891 18.75L3.44727 18.75C3.125 18.75 2.87109 19.0039 2.87109 19.3164C2.87109 19.6387 3.125 19.8926 3.44727 19.8926ZM6.5332 22.7246C8.04688 22.7246 9.30664 21.9824 9.4043 20.8594L3.67188 20.8594C3.74023 21.9824 5.00977 22.7246 6.5332 22.7246Z" fill="#508de6"/>
+          </g>
+        </svg>
+      <span class="nav-text">Money Tips</span>
+    </a>
+  </div>
+  <div class="sidebar-footer" style="color: gray; font-size: 0.8rem; text-align: center; margin-top: auto;">
+    <p>Made with ❤️ at the</p>
+    <p>University of Pittsburgh</p>
+    <br>
+    <p>Images courtesy of Undraw</p>
+  </div>
+</div>
+    <!-- /SIDEBAR -->
+  <!-- MAIN CONTENT: TRACK TRANSACTIONS -->
+  <div class="main-content">
+    <div class="content-wrapper">
+      <h1 class="page-title">Track Transactions</h1>
+
+      <!-- QUICK ACTIONS -->
+      <div class="quick-actions">
+        <!-- Add Expense -->
+        <button class="action-card" id="btnAddExpense">
+          <div class="action-left">
+            <div class="icon-circle" style="background-color: rgba(239,68,68,0.15); color: #EF4444;">
+              <svg class="icon" viewBox="0 0 24 24">
+                <line x1="7" y1="7" x2="17" y2="17"></line>
+                <polyline points="17 7 17 17 7 17"></polyline>
+              </svg>
+            </div>
+            <span class="action-label">Add Expense</span>
+          </div>
+          <div class="action-right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+        </button>
+
+        <!-- Add Income -->
+        <button class="action-card" id="btnAddIncome">
+          <div class="action-left">
+            <div class="icon-circle" style="background-color: rgba(34,197,94,0.15); color: #22C55E;">
+              <svg class="icon" viewBox="0 0 24 24">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+            <span class="action-label">Add Income</span>
+          </div>
+          <div class="action-right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- WEEK CARD -->
+      <div class="week-card">
+        <div class="week-card-header">
+          <button id="prevWeekBtn" class="arrow-btn">&larr;</button>
+          <span id="weekHeading">Week of</span>
+          <button id="nextWeekBtn" class="arrow-btn">&rarr;</button>
+        </div>
+        <div class="transactions-grid">
+          <!-- Left Column: Expenses -->
+          <div class="transactions-column" id="expensesColumn">
+            <h2>Expenses</h2>
+            <!-- Transactions will be rendered here -->
+          </div>
+
+          <!-- Right Column: Income -->
+          <div class="transactions-column" id="incomeColumn">
+            <h2>Income</h2>
+            <!-- Transactions will be rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MEAL PLANNING SECTION -->
+      <div class="meal-planning">
+        <h2 class="page-title" style="font-size: 1.1rem;">Plan your meals and track your grocery budget</h2>
+        <div id="mealPlanContainer"></div>
+        <button id="btnAddMealPlan">+ Create Meal Plan</button>
+      </div>
+    </div> <!-- /content-wrapper -->
+  </div> <!-- /main-content -->
+</div> <!-- /container -->
+
+<!-- Modal for Editing Description -->
+<div id="descriptionModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2>Edit Meal Plan Description</h2>
+    <textarea id="descriptionInput" rows="5" style="width:100%;"></textarea>
+    <button id="saveDescription" class="btn-meal" style="margin-top: 1rem;">Save</button>
+  </div>
+</div>
+
+<script>
+  function promptNumber(message) {
+    let input;
+    do {
+      input = prompt(message);
+      if (input === null) return null;
+    } while (isNaN(parseFloat(input)) || input.trim() === "");
+    return parseFloat(input);
+  }
+
+  function getLocalDateString(d) {
+    const tempDate = new Date(d);
+    tempDate.setMinutes(tempDate.getMinutes() - tempDate.getTimezoneOffset());
+    return tempDate.toISOString().slice(0, 10);
+  }
+
+  function promptDate(message, defaultDate) {
+    defaultDate = defaultDate || new Date();
+    let defaultString = getLocalDateString(defaultDate);
+    let dateInput = prompt(message + " (YYYY-MM-DD) or leave blank for " + defaultString + ":");
+    if (dateInput === null) return null;
+    dateInput = dateInput.trim();
+    if (dateInput === "") {
+      return defaultString;
+    }
+    return dateInput;
+  }
+
+  function generateId() {
+    return Date.now();
+  }
+
+  /* Local Storage Functions */
+  function saveData() {
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+    localStorage.setItem('incomes', JSON.stringify(incomes));
+    localStorage.setItem('mealPlans', JSON.stringify(mealPlans));
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }
+
+  /* Shared Categories Data */
+  let storedCategories = localStorage.getItem('categories');
+  // Categories default to an empty array if local storage is empty
+  let categories = storedCategories ? JSON.parse(storedCategories) : [];
+
+  function getCategoryByName(name) {
+    return categories.find(cat => cat.name.toLowerCase() === name.toLowerCase());
+  }
+
+  /* Transactions Functionality */
+  let storedExpenses = localStorage.getItem('expenses');
+  // Expenses also default to an empty array if local storage is empty
+  let expenses = storedExpenses ? JSON.parse(storedExpenses) : [];
+
+  let storedIncomes = localStorage.getItem('incomes');
+  // Incomes also default to an empty array if local storage is empty
+  let incomes = storedIncomes ? JSON.parse(storedIncomes) : [];
+
+  /* Week Navigation & Transaction Rendering */
+  // Function to get the Monday of a given date
+  function getMonday(d) {
+    const date = new Date(d);
+    const day = date.getDay();
+    const diff = date.getDate() - (day === 0 ? 6 : day - 1);
+    return new Date(date.setDate(diff));
+  }
+
+  // Initialize currentWeekStart from localStorage or compute Monday of today
+  let currentWeekStart = localStorage.getItem('currentWeekStart') 
+    ? new Date(localStorage.getItem('currentWeekStart')) 
+    : getMonday(new Date());
+
+  function updateWeekHeading() {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('weekHeading').textContent = "Week of " + currentWeekStart.toLocaleDateString(undefined, options);
+  }
+
+  // renderTransactions: compare dates as strings ("YYYY-MM-DD")
+  function renderTransactions() {
+    const expensesColumn = document.getElementById('expensesColumn');
+    const incomeColumn = document.getElementById('incomeColumn');
+    expensesColumn.innerHTML = '<h2>Expenses</h2>';
+    incomeColumn.innerHTML = '<h2>Income</h2>';
+
+    // Get the local date strings for the Monday and Sunday
+    let startStr = getLocalDateString(currentWeekStart);
+    let weekEndDate = new Date(currentWeekStart);
+    weekEndDate.setDate(weekEndDate.getDate() + 6);
+    let endStr = getLocalDateString(weekEndDate);
+
+    // Compare using local date strings
+    let weekExpenses = expenses.filter(item => {
+      let itemDateLocal = getLocalDateString(parseLocalDateString(item.date));
+      return itemDateLocal >= startStr && itemDateLocal <= endStr;
+    });
+    let weekIncomes = incomes.filter(item => {
+      let itemDateLocal = getLocalDateString(parseLocalDateString(item.date));
+      return itemDateLocal >= startStr && itemDateLocal <= endStr;
+    });
+
+    weekExpenses.forEach(item => {
+      const card = createTransactionCard(item, 'expense');
+      expensesColumn.appendChild(card);
+    });
+    weekIncomes.forEach(item => {
+      const card = createTransactionCard(item, 'income');
+      incomeColumn.appendChild(card);
+    });
+  }
+
+  function createTransactionCard(item, type) {
+    const card = document.createElement('div');
+    card.className = 'transaction-card';
+
+    const leftDiv = document.createElement('div');
+    leftDiv.className = 'transaction-left';
+    const title = document.createElement('h4');
+    title.textContent = item.title;
+
+    const catObj = getCategoryByName(item.category);
+    const categoryElem = document.createElement('p');
+    categoryElem.textContent = catObj ? catObj.name : item.category;
+
+    const dateElem = document.createElement('p');
+    dateElem.className = 'transaction-date';
+
+    // Convert the stored date string to a local date object, then to YYYY-MM-DD
+    const localParsed = parseLocalDateString(item.date);
+    dateElem.textContent = "Date: " + getLocalDateString(localParsed);
+    
+    leftDiv.appendChild(title);
+    leftDiv.appendChild(categoryElem);
+    leftDiv.appendChild(dateElem);
+
+    const rightDiv = document.createElement('div');
+    rightDiv.className = 'transaction-right-row';
+    const amountSpan = document.createElement('span');
+    amountSpan.className = 'transaction-amount';
+    amountSpan.textContent = (item.amount < 0 ? '-' : '+') + '$' + Math.abs(item.amount).toFixed(2);
+    amountSpan.classList.add(item.amount < 0 ? 'negative' : 'positive');
+    rightDiv.appendChild(amountSpan);
+
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'transaction-actions';
+
+    const editBtn = document.createElement('div');
+    editBtn.className = 'icon-btn';
+    editBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="display: block; margin: auto; position: relative; top: 2px; left: 2px;">
+      <path d="M2.66795 14.6297L13.3222 3.98517L11.6133 2.26642L0.949202 12.911L0.021468 15.0887C-0.0761882 15.3231 0.177718 15.5965 0.412093 15.4988ZM14.1816 3.14533L15.168 2.17853C15.666 1.68048 15.6953 1.14338 15.2461 0.694157L14.914 0.362125C14.4746-0.0773278 13.9375-0.0382653 13.4394 0.450016L12.4531 1.42658Z" fill="white" fill-opacity="0.85"/>
+    </svg>`;
+    editBtn.addEventListener('click', () => editTransaction(item.id, type));
+    actionsDiv.appendChild(editBtn);
+
+    const deleteBtn = document.createElement('div');
+    deleteBtn.className = 'icon-btn';
+    deleteBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M6.5625 18.6035C6.93359 18.6035 7.17773 18.3691 7.16797 18.0273L6.86523 7.57812C6.85547 7.23633 6.61133 7.01172 6.25977 7.01172C5.88867 7.01172 5.64453 7.24609 5.6543 7.58789L5.94727 18.0273C5.95703 18.3789 6.20117 18.6035 6.5625 18.6035ZM9.45312 18.6035C9.82422 18.6035 10.0879 18.3691 10.0879 18.0273L10.0879 7.58789C10.0879 7.24609 9.82422 7.01172 9.45312 7.01172C9.08203 7.01172 8.82812 7.24609 8.82812 7.58789L8.82812 18.0273C8.82812 18.3691 9.08203 18.6035 9.45312 18.6035ZM12.3535 18.6035C12.7051 18.6035 12.9492 18.3789 12.959 18.0273L13.252 7.58789C13.2617 7.24609 13.0176 7.01172 12.6465 7.01172C12.2949 7.01172 12.0508 7.23633 12.041 7.58789L11.748 18.0273C11.7383 18.3691 11.9824 18.6035 12.3535 18.6035ZM5.16602 4.46289L6.71875 4.46289L6.71875 2.37305C6.71875 1.81641 7.10938 1.45508 7.69531 1.45508L11.1914 1.45508C11.7773 1.45508 12.168 1.81641 12.168 2.37305L12.168 4.46289L13.7207 4.46289L13.7207 2.27539C13.7207 0.859375 12.8027 0 11.2988 0L7.58789 0C6.08398 0 5.16602 0.859375 5.16602 2.27539ZM0.732422 5.24414L18.1836 5.24414C18.584 5.24414 18.9062 4.90234 18.9062 4.50195C18.9062 4.10156 18.584 3.76953 18.1836 3.76953L0.732422 3.76953C0.341797 3.76953 0 4.10156 0 4.50195C0 4.91211 0.341797 5.24414 0.732422 5.24414ZM4.98047 21.748L13.9355 21.748C15.332 21.748 16.2695 20.8398 16.3379 19.4434L17.0215 5.05859L15.4492 5.05859L14.7949 19.2773C14.7754 19.8633 14.3555 20.2734 13.7793 20.2734L5.11719 20.2734C4.56055 20.2734 4.14062 19.8535 4.11133 19.2773L3.41797 5.05859L1.88477 5.05859L2.57812 19.4531C2.64648 20.8496 3.56445 21.748 4.98047 21.748Z" fill="white" fill-opacity="0.85"/>
+    </svg>`;
+    deleteBtn.addEventListener('click', () => deleteTransaction(item.id, type));
+    actionsDiv.appendChild(deleteBtn);
+
+    rightDiv.appendChild(actionsDiv);
+    card.appendChild(leftDiv);
+    card.appendChild(rightDiv);
+    return card;
+  }
+
+  function editTransaction(id, type) {
+  let list = type === 'expense' ? expenses : incomes;
+  let item = list.find(t => t.id === id);
+  if (item) {
+    let newTitle = prompt("Edit title:", item.title);
+    if (newTitle === null) return;
+    newTitle = newTitle.trim();
+    if (newTitle === "") return;
+
+    let newCategory = prompt("Edit category:", item.category);
+    if (newCategory === null) return;
+    newCategory = newCategory.trim();
+    if (newCategory === "") return;
+
+    let newAmount = promptNumber("Edit amount (use negative for expenses):");
+    if (newAmount === null) return;
+
+    let newDate = prompt("Edit date (YYYY-MM-DD):", item.date);
+    if (newDate === null) return;
+    newDate = newDate.trim();
+    if (newDate === "") return;
+
+    item.title = newTitle;
+    item.category = newCategory;
+    item.amount = newAmount;
+    item.date = newDate;
+
+    // Use parseLocalDateString to interpret date in local time
+    const newDateObj = parseLocalDateString(newDate);
+
+    // Compute the Monday of the new date
+    const newWeekStart = getMonday(newDateObj);
+
+    // If the new week start differs, update currentWeekStart and heading
+    if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+      currentWeekStart = newWeekStart;
+      localStorage.setItem("currentWeekStart", currentWeekStart.toISOString());
+      updateWeekHeading();
+    }
+
+    renderTransactions();
+    saveData();
+  }
+}
+
+function parseLocalDateString(dateString) {
+  // Split the YYYY-MM-DD input
+  const [year, month, day] = dateString.split("-");
+  // Create a new Date in local time (month is zero-based)
+  return new Date(+year, +month - 1, +day);
+}
+
+  function deleteTransaction(id, type) {
+    if (confirm("Are you sure you want to delete this transaction?")) {
+      if (type === 'expense') {
+        expenses = expenses.filter(t => t.id !== id);
+      } else {
+        incomes = incomes.filter(t => t.id !== id);
+      }
+      renderTransactions();
+      saveData();
+    }
+  }
+
+  // Week navigation event listeners
+  document.getElementById('prevWeekBtn').addEventListener('click', () => {
+    currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+    localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
+    updateWeekHeading();
+    renderTransactions();
+  });
+
+  document.getElementById('nextWeekBtn').addEventListener('click', () => {
+    currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+    localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
+    updateWeekHeading();
+    renderTransactions();
+  });
+
+  // Initialize week heading on page load
+  updateWeekHeading();
+
+  /* Expense & Income Creation */
+  document.getElementById('btnAddExpense').addEventListener('click', () => {
+    const title = prompt("Enter expense title:");
+    if (!title) return;
+    const category = prompt("Enter expense category:");
+    let amount = promptNumber("Enter expense amount (e.g., 80 for $80):");
+    if (amount === null) return;
+    const date = promptDate("Enter expense date", new Date());
+    const newExpense = {
+      id: generateId(),
+      title: title.trim(),
+      category: category ? category.trim() : "",
+      amount: -Math.abs(amount),
+      date: date
+    };
+    expenses.push(newExpense);
+    const newDateObj = parseLocalDateString(date);
+    const newWeekStart = getMonday(newDateObj);
+    if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+      currentWeekStart = newWeekStart;
+      localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
+      updateWeekHeading();
+    }
+    renderTransactions();
+    saveData();
+  });
+
+  document.getElementById('btnAddIncome').addEventListener('click', () => {
+    const title = prompt("Enter income title:");
+    if (!title) return;
+    const category = prompt("Enter income category:");
+    let amount = promptNumber("Enter income amount (e.g., 100 for $100):");
+    if (amount === null) return;
+    const date = promptDate("Enter income date", new Date());
+    const newIncome = {
+      id: generateId(),
+      title: title.trim(),
+      category: category ? category.trim() : "",
+      amount: Math.abs(amount),
+      date: date
+    };
+    incomes.push(newIncome);
+    const newDateObj = parseLocalDateString(date);
+    const newWeekStart = getMonday(newDateObj);
+    if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+      currentWeekStart = newWeekStart;
+      localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
+      updateWeekHeading();
+    }
+    renderTransactions();
+    saveData();
+  });
+
+  /* Meal Plan Functionality */
+  let storedMealPlans = localStorage.getItem('mealPlans');
+  let mealPlans = storedMealPlans
+    ? JSON.parse(storedMealPlans)
+    : [
+        {
+          id: "default",
+          title: "Meal Plan",
+          category:
+            "For accurate analytics, please use consistent category names across all entries (expenses, incomes, and meal plans). For example, if you label an expense as ‘Groceries,’ use ‘Groceries’ for your meal plan category as well.",
+          description: "",
+          deductions: []
+        }
+      ];
+
+  let currentEditingPlanId = null;
+
+  function renderMealPlans() {
+    const container = document.getElementById('mealPlanContainer');
+    container.innerHTML = "";
+    mealPlans.forEach(plan => {
+      const card = document.createElement('div');
+      card.className = 'meal-card';
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'meal-title';
+      titleDiv.textContent = plan.title;
+      card.appendChild(titleDiv);
+      
+      if (plan.id === "default") {
+        const catDiv = document.createElement('div');
+        catDiv.className = 'meal-category';
+        catDiv.textContent = plan.category;
+        card.appendChild(catDiv);
+      } else {
+        const catDiv = document.createElement('div');
+        catDiv.className = 'meal-category';
+        catDiv.textContent = plan.category ? plan.category : "Category";
+        card.appendChild(catDiv);
+        
+        const descDiv = document.createElement('div');
+        descDiv.className = 'meal-description';
+        descDiv.textContent = plan.description ? plan.description : "No description provided.";
+        card.appendChild(descDiv);
+        
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'meal-actions';
+        const editBtn = document.createElement('div');
+        editBtn.className = 'icon-btn';
+        editBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="display: block; margin: auto; position: relative; top: 2px; left: 3px;">
+          <path d="M2.66795 14.6297L13.3222 3.98517L11.6133 2.26642L0.949202 12.911L0.021468 15.0887C-0.0761882 15.3231 0.177718 15.5965 0.412093 15.4988ZM14.1816 3.14533L15.168 2.17853C15.666 1.68048 15.6953 1.14338 15.2461 0.694157L14.914 0.362125C14.4746-0.0773278 13.9375-0.0382653 13.4394 0.450016L12.4531 1.42658Z" fill="white" fill-opacity="0.85"/>
+        </svg>`;
+        editBtn.addEventListener('click', () => editMealPlan(plan.id));
+        actionsDiv.appendChild(editBtn);
+        
+        const deleteBtn = document.createElement('div');
+        deleteBtn.className = 'icon-btn';
+        deleteBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="display: block; margin: auto; position: relative;">
+          <path d="M6.5625 18.6035C6.93359 18.6035 7.17773 18.3691 7.16797 18.0273L6.86523 7.57812C6.85547 7.23633 6.61133 7.01172 6.25977 7.01172C5.88867 7.01172 5.64453 7.24609 5.6543 7.58789L5.94727 18.0273C5.95703 18.3789 6.20117 18.6035 6.5625 18.6035ZM9.45312 18.6035C9.82422 18.6035 10.0879 18.3691 10.0879 18.0273L10.0879 7.58789C10.0879 7.24609 9.82422 7.01172 9.45312 7.01172C9.08203 7.01172 8.82812 7.24609 8.82812 7.58789L8.82812 18.0273C8.82812 18.3691 9.08203 18.6035 9.45312 18.6035ZM12.3535 18.6035C12.7051 18.6035 12.9492 18.3789 12.959 18.0273L13.252 7.58789C13.2617 7.24609 13.0176 7.01172 12.6465 7.01172C12.2949 7.01172 12.0508 7.23633 12.041 7.58789L11.748 18.0273C11.7383 18.3691 11.9824 18.6035 12.3535 18.6035ZM5.16602 4.46289L6.71875 4.46289L6.71875 2.37305C6.71875 1.81641 7.10938 1.45508 7.69531 1.45508L11.1914 1.45508C11.7773 1.45508 12.168 1.81641 12.168 2.37305L12.168 4.46289L13.7207 4.46289L13.7207 2.27539C13.7207 0.859375 12.8027 0 11.2988 0L7.58789 0C6.08398 0 5.16602 0.859375 5.16602 2.27539ZM0.732422 5.24414L18.1836 5.24414C18.584 5.24414 18.9062 4.90234 18.9062 4.50195C18.9062 4.10156 18.584 3.76953 18.1836 3.76953L0.732422 3.76953C0.341797 3.76953 0 4.10156 0 4.50195C0 4.91211 0.341797 5.24414 0.732422 5.24414ZM4.98047 21.748L13.9355 21.748C15.332 21.748 16.2695 20.8398 16.3379 19.4434L17.0215 5.05859L15.4492 5.05859L14.7949 19.2773C14.7754 19.8633 14.3555 20.2734 13.7793 20.2734L5.11719 20.2734C4.56055 20.2734 4.14062 19.8535 4.11133 19.2773L3.41797 5.05859L1.88477 5.05859L2.57812 19.4531C2.64648 20.8496 3.56445 21.748 4.98047 21.748Z" fill="white" fill-opacity="0.85"/>
+        </svg>`;
+        deleteBtn.addEventListener('click', () => deleteMealPlan(plan.id));
+        actionsDiv.appendChild(deleteBtn);
+        
+        card.appendChild(actionsDiv);
+
+        const btnDeduction = document.createElement('button');
+        btnDeduction.className = 'btn-meal btn-deduction';
+        btnDeduction.textContent = "Add Deduction";
+        btnDeduction.addEventListener('click', () => addDeduction(plan.id));
+        card.appendChild(btnDeduction);
+      }
+      
+      container.appendChild(card);
+    });
+  }
+
+  function addDeduction(planId) {
+    const description = prompt("Enter deduction description:");
+    if (description === null) return;
+    if (description.trim() === "") return;
+    let amount = promptNumber("Enter deduction amount (e.g., 20 for $20 deduction):");
+    if (amount === null) return;
+    const date = promptDate("Enter deduction date", new Date());
+    if (date === null) return;
+    const plan = mealPlans.find(p => p.id === planId);
+    if (!plan) return;
+    const deduction = { description: description.trim(), category: plan.category, amount: -Math.abs(amount) };
+    plan.deductions.push(deduction);
+    const newExpense = {
+      id: generateId(),
+      title: `Deduction from ${plan.title}: ${deduction.description}`,
+      category: deduction.category,
+      amount: deduction.amount,
+      date: date
+    };
+    expenses.push(newExpense);
+    renderTransactions();
+    renderMealPlans();
+    saveData();
+  }
+
+  function editMealPlan(planId) {
+    const plan = mealPlans.find(p => p.id === planId);
+    if (!plan || plan.id === "default") {
+      alert("This meal plan cannot be edited.");
+      return;
+    }
+    const newTitle = prompt("Edit meal plan title:", plan.title);
+    if (newTitle === null) return;
+    if (newTitle.trim() === "") return;
+    const newCategory = prompt("Edit meal plan category:", plan.category ? plan.category : "Category");
+    if (newCategory === null) return;
+    if (newCategory.trim() === "") return;
+    
+    plan.title = newTitle.trim();
+    plan.category = newCategory.trim();
+    
+    if (confirm("Do you want to edit the meal plan description?")) {
+      currentEditingPlanId = plan.id;
+      document.getElementById('descriptionInput').value = plan.description;
+      document.getElementById('descriptionModal').style.display = "block";
+      document.getElementById('descriptionInput').focus();
+    }
+    renderMealPlans();
+    saveData();
+  }
+
+  function deleteMealPlan(planId) {
+    if (planId === "default") {
+      alert("The default meal plan cannot be deleted.");
+      return;
+    }
+    if (confirm("Are you sure you want to delete this meal plan?")) {
+      mealPlans = mealPlans.filter(p => p.id !== planId);
+      renderMealPlans();
+      saveData();
+    }
+  }
+
+  document.getElementById('btnAddMealPlan').addEventListener('click', () => {
+    const title = prompt("Enter new meal plan or grocery title:");
+    if (!title) return;
+    const category = prompt("Enter new meal plan or grocery category:");
+    if (category === null) return;
+    const newPlan = { id: generateId(), title: title.trim(), category: category.trim(), description: "", deductions: [] };
+    mealPlans.push(newPlan);
+    renderMealPlans();
+    saveData();
+    if (confirm("Would you like to add a description?")) {
+      currentEditingPlanId = newPlan.id;
+      document.getElementById('descriptionInput').value = newPlan.description;
+      document.getElementById('descriptionModal').style.display = "block";
+      document.getElementById('descriptionInput').focus();
+    }
+  });
+
+  /* Modal Functionality */
+  const modal = document.getElementById('descriptionModal');
+  const closeModal = document.getElementById('closeModal');
+  const saveDescription = document.getElementById('saveDescription');
+
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  saveDescription.onclick = function() {
+    const newDesc = document.getElementById('descriptionInput').value;
+    const plan = mealPlans.find(p => p.id === currentEditingPlanId);
+    if (plan) {
+      plan.description = newDesc;
+    }
+    modal.style.display = "none";
+    renderMealPlans();
+    saveData();
+  }
+
+  /* Final Render Calls */
+  renderTransactions();
+  renderMealPlans();
+  saveData();
+</script>
+</body>
+</html>
