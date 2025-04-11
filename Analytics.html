@@ -606,6 +606,8 @@
     { id: 2, name: "Academic", budget: 150 },
     { id: 3, name: "Food", budget: 300 }
   ];
+  // Retrieve the month-specific category budgets
+  let categoryBudgets = JSON.parse(localStorage.getItem('categoryBudgets')) || {};
 
   // For toggling weekly and monthly category views
   let categoryView = 'spending';
@@ -821,6 +823,11 @@
     let weekEnd = new Date(currentWeekStart.getTime() + 6*24*60*60*1000);
     let weekEndStr = weekEnd.toISOString().slice(0,10);
 
+    // Determine the current month key based on currentWeekStart
+    let year = currentWeekStart.getFullYear();
+    let month = currentWeekStart.getMonth();
+    let monthKey = year + '-' + ('0' + (month + 1)).slice(-2);
+
     if (categoryView === 'spending') {
       let expenseGroups = {};
 
@@ -830,7 +837,14 @@
           let catName = (e.category || "Uncategorized").trim();
           let key = catName.toLowerCase();
           let catObj = categories.find(c => c.name.trim().toLowerCase() === key);
-          let catBudget = catObj ? catObj.budget : 0;
+          let catBudget = 0;
+          if (catObj) {
+            if (categoryBudgets[monthKey] && categoryBudgets[monthKey][catObj.id] !== undefined) {
+              catBudget = categoryBudgets[monthKey][catObj.id];
+            } else {
+              catBudget = catObj.budget;
+            }
+          }
           if (!expenseGroups[key]) {
             expenseGroups[key] = { name: catName, total: 0, budget: catBudget };
           }
@@ -937,13 +951,16 @@
     const container = document.getElementById('monthlyCategoryCards');
     container.innerHTML = '';
 
-    // Using currentWeekStart for monthly range instead of system date
+    // Determine the monthly range using currentWeekStart
     let year = currentWeekStart.getFullYear();
     let month = currentWeekStart.getMonth();
     let firstDay = new Date(year, month, 1);
     let nextMonth = new Date(year, month + 1, 1);
     let startDate = firstDay.toISOString().slice(0,10);
     let endDate = nextMonth.toISOString().slice(0,10);
+
+    // Compute the month key
+    let monthKey = year + '-' + ('0' + (month + 1)).slice(-2);
 
     if (monthlyCategoryView === 'spending') {
       let expenseGroups = {};
@@ -954,7 +971,14 @@
           let catName = (e.category || "Uncategorized").trim();
           let key = catName.toLowerCase();
           let catObj = categories.find(c => c.name.trim().toLowerCase() === key);
-          let catBudget = catObj ? catObj.budget : 0;
+          let catBudget = 0;
+          if (catObj) {
+            if (categoryBudgets[monthKey] && categoryBudgets[monthKey][catObj.id] !== undefined) {
+              catBudget = categoryBudgets[monthKey][catObj.id];
+            } else {
+              catBudget = catObj.budget;
+            }
+          }
           if (!expenseGroups[key]) {
             expenseGroups[key] = { name: catName, total: 0, budget: catBudget };
           }
