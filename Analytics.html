@@ -368,6 +368,24 @@
   #toggleCategoryView:hover, #toggleMonthlyView:hover {
     color: #508de6 !important;
   }
+
+  .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.export-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #2042aa;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
   </style>
 </head>
 <body>
@@ -446,7 +464,10 @@
   <div class="main-content">
     <div class="content-wrapper">
       <!-- PAGE TITLE -->
-      <h1 class="page-title">Analytics</h1>
+      <div class="page-header">
+        <h1 class="page-title">Analytics</h1>
+        <button id="exportCSV" class="export-btn">Export CSV</button>
+      </div>
 
       <!-- TOP SECTION: Budget Card & Progress Circle Card -->
       <div class="top-section">
@@ -1080,6 +1101,69 @@
 
   /* Final Render Calls */
   updateAnalytics();
+</script>
+<script>
+  document.getElementById('exportCSV').addEventListener('click', function(){
+    // Retrieve data from localStorage
+    let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    let incomes = JSON.parse(localStorage.getItem('incomes')) || [];
+    let monthlyBudgets = JSON.parse(localStorage.getItem('monthlyBudgets')) || {};
+    let categories = JSON.parse(localStorage.getItem('categories')) || [];
+    let categoryBudgets = JSON.parse(localStorage.getItem('categoryBudgets')) || {};
+    let currentWeekStart = localStorage.getItem('currentWeekStart') || '';
+  
+    let csvContent = '';
+  
+    // Transactions Section
+    csvContent += 'Date,Type,Amount,Category\n';
+    expenses.forEach(exp => {
+      csvContent += `${exp.date},Expense,${exp.amount},${exp.category || 'Uncategorized'}\n`;
+    });
+    incomes.forEach(inc => {
+      csvContent += `${inc.date},Income,${inc.amount},${inc.category || 'Uncategorized'}\n`;
+    });
+    csvContent += '\n';
+  
+    // Monthly Budgets Section
+    csvContent += 'Month,Total Budget\n';
+    for (let key in monthlyBudgets) {
+      csvContent += `${key},${monthlyBudgets[key]}\n`;
+    }
+    csvContent += '\n';
+  
+    // Expense Categories (Default Budgets) Section
+    csvContent += 'Category,Default Budget\n';
+    categories.forEach(cat => {
+      csvContent += `${cat.name},${cat.budget}\n`;
+    });
+    csvContent += '\n';
+  
+    // Category Budgets per Month
+    csvContent += 'Month,Category,Monthly Budget\n';
+    for (let monthKey in categoryBudgets) {
+      let budgets = categoryBudgets[monthKey];
+      for (let catId in budgets) {
+        let catObj = categories.find(c => c.id == catId);
+        let catName = catObj ? catObj.name : 'Unknown';
+        csvContent += `${monthKey},${catName},${budgets[catId]}\n`;
+      }
+    }
+    csvContent += '\n';
+  
+    // Additional Information
+    csvContent += `Current Week Start,${currentWeekStart}\n`;
+    csvContent += `Exported On,${new Date().toISOString()}\n`;
+  
+    // Create a blob and trigger download
+    let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'financier_data_export.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
 </script>
 </body>
 </html>
