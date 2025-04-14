@@ -11,7 +11,7 @@ This web application is designed to help college students efficiently manage the
 - **Spending and Income Overview:** Visual summaries for weekly and monthly entries.
 - **Built-in Calculator:** Convenient financial calculations within the app.
 - **Financial Tips:** Practical budgeting tips tailored specifically for college students.
-- **Data Management:** Secure data retention with local storage.
+- **Data Management:** Secure data retention with local storage and export data as CSV.
 
 ## Technology Stack
 - HTML, CSS, JavaScript
