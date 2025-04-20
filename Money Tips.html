@@ -8,7 +8,6 @@
       --scroll-duration: 105s;
       --even-duration: 125s;
     }
-    /* Basic Reset */
     * {
       margin: 0;
       padding: 0;
@@ -114,10 +113,12 @@
       color: #FFFFFF;
     }
     .arrow-line {
-      margin-top: 3rem;
+      margin-top: 3.25rem;
       width: 100%;
+      padding-right: 10px;
       height: 2px;
       background-color: #4e80ee;
+      background-clip: content-box;
       position: relative;
       margin-bottom: 1rem;
     }
@@ -148,6 +149,7 @@
       display: inline-flex;
       white-space: nowrap;
       gap: 2rem;
+      will-change: transform;
     }
     .tips-row:nth-child(odd) .tips-row-inner {
       animation: scrollLeft var(--scroll-duration) linear infinite;
@@ -171,6 +173,8 @@
       justify-content: center;
       transition: border-color 0.2s ease;
       min-width: 250px;
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
     .tip-card:hover {
       border-color: #4e80ee;
