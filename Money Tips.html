@@ -150,6 +150,7 @@
       white-space: nowrap;
       gap: 2rem;
       will-change: transform;
+      transform: translateZ(0);
     }
     .tips-row:nth-child(odd) .tips-row-inner {
       animation: scrollLeft var(--scroll-duration) linear infinite;
@@ -159,8 +160,8 @@
       animation-direction: reverse;
     }
     @keyframes scrollLeft {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0%   { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
     }
     .tip-card {
       background-color: #181A1E;
