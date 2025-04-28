@@ -246,7 +246,7 @@
       background-color: #2D2F34;
       padding: 0.5rem 0.75rem;
       border-radius: 4px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       line-height: 0;
@@ -455,9 +455,9 @@
       let key = getMonthKey(selectedMonth);
       let monthYearStr = selectedMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
       document.getElementById('monthlyBudgetDisplay').innerHTML =
-        '<button id="prevMonth" style="color: #ffffff; font-size: inherit;">&lt;</button>' +
+        '<button id="prevMonth" class="icon-btn" style="font-size: inherit;">&lt;</button>' +
         '<span id="currentMonthYear"> ' + monthYearStr + ' </span>' +
-        '<button id="nextMonth" style="color: #ffffff; font-size: inherit;">&gt;</button>' +
+        '<button id="nextMonth" class="icon-btn" style="font-size: inherit;">&gt;</button>' +
         ' : ' +
         '<span class="dollar">$' + getMonthlyBudget() + '</span>';
       document.getElementById('prevMonth').addEventListener('click', () => changeMonth(-1));
