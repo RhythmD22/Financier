@@ -151,11 +151,12 @@
       gap: 2rem;
       will-change: transform;
       transform: translateZ(0);
+      backface-visibility: hidden;
     }
-    .tips-row:nth-child(odd) .tips-row-inner {
+    .scroll-animate:nth-child(odd) .tips-row-inner {
       animation: scrollLeft var(--scroll-duration) linear infinite;
     }
-    .tips-row:nth-child(even) .tips-row-inner {
+    .scroll-animate:nth-child(even) .tips-row-inner {
       animation: scrollLeft var(--even-duration) linear infinite;
       animation-direction: reverse;
     }
@@ -668,6 +669,17 @@
       defaultBtn.querySelectorAll('svg path').forEach(path => {
         path.setAttribute('fill', categoryColors["textbook"]);
       });
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.tips-row').forEach(row => {
+          row.classList.add('scroll-animate');
+        });
+        // restart tips to ensure animations apply
+        const activeCategory = document.querySelector('.category-button.active').getAttribute('data-category');
+        updateTips(activeCategory);
+      }, 50);
     });
   </script>
 </body>
