@@ -833,6 +833,14 @@
           }
         },
         plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.dataset.label ? context.dataset.label + ': ' : '';
+                return label + '$' + context.parsed.y;
+              }
+            }
+          },
           legend: { display: true }
         }
       }
