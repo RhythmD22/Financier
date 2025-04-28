@@ -748,49 +748,53 @@
   }
 
   function editTransaction(id, type) {
-  let list = type === 'expense' ? expenses : incomes;
-  let item = list.find(t => t.id === id);
-  if (item) {
-    let newTitle = prompt("Edit title:", item.title);
-    if (newTitle === null) return;
-    newTitle = newTitle.trim();
-    if (newTitle === "") return;
+    let list = type === 'expense' ? expenses : incomes;
+    let item = list.find(t => t.id === id);
+    if (item) {
+      let newTitle = prompt("Edit title:", item.title);
+      if (newTitle === null) return;
+      newTitle = newTitle.trim();
+      if (newTitle === "") return;
 
-    let newCategory = prompt("Edit category:", item.category);
-    if (newCategory === null) return;
-    newCategory = newCategory.trim();
-    if (newCategory === "") return;
+      let newCategory = prompt("Edit category:", item.category);
+      if (newCategory === null) return;
+      newCategory = newCategory.trim();
+      if (newCategory === "") return;
 
-    let newAmount = promptNumber("Edit amount (use negative for expenses):");
-    if (newAmount === null) return;
+      let newAmount = promptNumber("Edit amount (e.g., 80 for $80):");
+      if (newAmount === null) return;
 
-    let newDate = prompt("Edit date (YYYY-MM-DD):", item.date);
-    if (newDate === null) return;
-    newDate = newDate.trim();
-    if (newDate === "") return;
+      let newDate = prompt("Edit date (YYYY-MM-DD):", item.date);
+      if (newDate === null) return;
+      newDate = newDate.trim();
+      if (newDate === "") return;
 
-    item.title = newTitle;
-    item.category = newCategory;
-    item.amount = newAmount;
-    item.date = newDate;
+      item.title = newTitle;
+      item.category = newCategory;
+      if (type === 'expense') {
+        item.amount = -Math.abs(newAmount);
+      } else {
+        item.amount = Math.abs(newAmount);
+      }
+      item.date = newDate;
 
-    // Use parseLocalDateString to interpret date in local time
-    const newDateObj = parseLocalDateString(newDate);
+      // Use parseLocalDateString to interpret date in local time
+      const newDateObj = parseLocalDateString(newDate);
 
-    // Compute the Monday of the new date
-    const newWeekStart = getMonday(newDateObj);
+      // Compute the Monday of the new date
+      const newWeekStart = getMonday(newDateObj);
 
-    // If the new week start differs, update currentWeekStart and heading
-    if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
-      currentWeekStart = newWeekStart;
-      localStorage.setItem("currentWeekStart", currentWeekStart.toISOString());
-      updateWeekHeading();
+      // If the new week start differs, update currentWeekStart and heading
+      if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+        currentWeekStart = newWeekStart;
+        localStorage.setItem("currentWeekStart", currentWeekStart.toISOString());
+        updateWeekHeading();
+      }
+
+      renderTransactions();
+      saveData();
     }
-
-    renderTransactions();
-    saveData();
   }
-}
 
 function parseLocalDateString(dateString) {
   // Split the YYYY-MM-DD input
