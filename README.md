@@ -7,11 +7,18 @@ This web application is designed to help college students efficiently manage the
 ## Features
 
 - **Goal Setting:** Set personalized financial goals with customizable categories.
-- **Expense and Income Tracking:** Easily monitor expenses and manage income, including a section specifically for meal planning.
-- **Spending and Income Overview:** Visual summaries for weekly and monthly entries.
-- **Built-in Calculator:** Convenient financial calculations within the app.
-- **Financial Tips:** Practical budgeting tips tailored specifically for college students.
-- **Data Management:** Secure data retention with local storage and export data as CSV.
+- **Expense & Income Tracking:** Monitor all transactions, including dedicated support for meal planning.
+- **Visual Summaries:** View weekly and monthly overviews of spending and income through charts.
+- **Built-in Calculator:** Perform financial calculations without leaving the app.
+- **Budgeting Tips:** Receive practical financial advice tailored to college students.
+- **Local Data Storage:** Data is saved in the browser and can be exported as a CSV file.
 
 ## Technology Stack
-- HTML, CSS, JavaScript
+
+- HTML  
+- CSS  
+- JavaScript
+
+## License
+
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
