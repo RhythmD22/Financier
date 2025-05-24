@@ -1,0 +1,99 @@
+/* ===== Base Background Styles ===== */
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #0F1114;
+  color: #FFFFFF;
+}
+
+/* ===== Layout Container ===== */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== Sidebar Styles ===== */
+.sidebar {
+  width: 240px;
+  background-color: #181A1E;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+.sidebar h2 {
+  margin-bottom: 1.8rem;
+  font-size: 1.8rem;
+  color: #FFFFFF;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+.nav-item:hover {
+  background-color: #24272B;
+}
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.75rem;
+  color: #E5E5E5;
+}
+.nav-text {
+  font-size: 0.9rem;
+}
+.sidebar-buttons {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.btn-secondary {
+  background-color: #2D2F34;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  text-align: center;
+}
+.btn-secondary:hover {
+  background-color: #3A3D42;
+}
+.btn-blue {
+  background-color: #1043B1;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  text-align: center;
+  border: none;
+}
+.btn-blue:hover {
+  background-color: #2D6FE4;
+}
+
+/* ===== Responsive Sidebar Styles ===== */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .sidebar-buttons {
+    margin-top: 1rem;
+    flex-direction: row;
+  }
+  .nav-item {
+    margin-right: 1rem;
+  }
+}
