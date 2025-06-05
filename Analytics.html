@@ -822,6 +822,13 @@
         title.textContent = group.name;
         title.style.color = color;
         card.appendChild(title);
+        if (totalAmount > budget) {
+          let exceededLabel = document.createElement('div');
+          exceededLabel.textContent = '(Exceeded)';
+          exceededLabel.style.color = '#dd524c';
+          exceededLabel.style.fontSize = '0.9rem';
+          card.appendChild(exceededLabel);
+        }
 
         let breakdown = document.createElement('div');
         breakdown.className = 'expense-category-breakdown';
@@ -955,6 +962,13 @@
         title.textContent = group.name;
         title.style.color = color;
         card.appendChild(title);
+        if (totalAmount > budget) {
+          let exceededLabel = document.createElement('div');
+          exceededLabel.textContent = '(Exceeded)';
+          exceededLabel.style.color = '#dd524c';
+          exceededLabel.style.fontSize = '0.9rem';
+          card.appendChild(exceededLabel);
+        }
 
         let breakdown = document.createElement('div');
         breakdown.className = 'expense-category-breakdown';
