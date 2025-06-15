@@ -1,8 +1,30 @@
-# College Budgeting Web App
+# Financier - College Budgeting Web App
 
 ## Overview
 
-This web application is designed to help college students efficiently manage their finances through easy expense tracking, goal setting, and income management.
+Financier is a lightweight web application that helps college students track spending, plan budgets and manage income. The app runs entirely in the browser, so no server setup is required.
+
+## Getting Started
+
+1. Clone this repository.
+2. Launch a local web server from the project directory:
+   ```bash
+   python3 -m http.server
+   ```
+   Then open `http://localhost:8000/index.html` in your browser. You can also open `index.html` directly without a server.
+3. If you prefer not to run a server, the latest version is hosted on GitHub Pages:
+   <https://rhythmdesai22.github.io/Financier/>
+
+## Navigation
+
+- **Index:** Landing page with quick links to other sections.
+- **Goals & Categories:** Configure custom categories and set financial goals.
+- **Track Transactions:** Record income and expenses for each category.
+- **Analytics:** View charts summarizing weekly and monthly spending trends.
+- **Money Tips:** Browse practical budgeting advice.
+- **Calculator:** Perform calculations without leaving the app.
+
+All data is saved in your browser via `localStorage` and can be exported as CSV.
 
 ## Features
 
@@ -15,8 +37,8 @@ This web application is designed to help college students efficiently manage the
 
 ## Technology Stack
 
-- HTML  
-- CSS  
+- HTML
+- CSS
 - JavaScript
 
 ## License
