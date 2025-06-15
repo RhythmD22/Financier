@@ -12,6 +12,8 @@ Financier is a lightweight web application that helps college students track spe
    python3 -m http.server
    ```
    Then open `http://localhost:8000/index.html` in your browser. You can also open `index.html` directly without a server.
+3. If you prefer not to run a server, the latest version is hosted on GitHub Pages:
+   <https://rhythmdesai22.github.io/Financier/>
 
 ## Navigation
 
