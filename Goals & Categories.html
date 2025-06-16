@@ -330,11 +330,28 @@
       return parseFloat(input);
     }
 
+    // Highlight dollar amounts within an element's text
+    function highlightDollarAmounts(element) {
+      const text = element.textContent;
+      element.textContent = "";
+      const parts = text.split(/(\$\d+(?:\.\d+)?)/g);
+      parts.forEach(part => {
+        if (/^\$\d+(?:\.\d+)?$/.test(part)) {
+          const span = document.createElement('span');
+          span.className = 'dollar';
+          span.textContent = part;
+          element.appendChild(span);
+        } else {
+          element.appendChild(document.createTextNode(part));
+        }
+      });
+    }
+
     // Goals and Categories stored in localStorage
     let storedGoals = localStorage.getItem('goals');
-    let goals = storedGoals ? JSON.parse(storedGoals) : [
-      { id: 1, title: "Emergency Fund", description: "Save <span class='dollar'>$1000</span> by December 2025", current: 450, target: 1000 }
-    ];
+      let goals = storedGoals ? JSON.parse(storedGoals) : [
+        { id: 1, title: "Emergency Fund", description: "Save $1000 by December 2025", current: 450, target: 1000 }
+      ];
 
     let storedCategories = localStorage.getItem('categories');
     let categories = storedCategories ? JSON.parse(storedCategories) : [
@@ -430,10 +447,12 @@
         const info = document.createElement('div');
         info.className = 'goal-info';
         const h4 = document.createElement('h4');
-        h4.innerHTML = goal.title;
+        h4.textContent = goal.title;
+        highlightDollarAmounts(h4);
         info.appendChild(h4);
         const pDesc = document.createElement('p');
-        pDesc.innerHTML = goal.description;
+        pDesc.textContent = goal.description;
+        highlightDollarAmounts(pDesc);
         info.appendChild(pDesc);
 
         const progressContainer = document.createElement('div');
@@ -557,20 +576,16 @@
     }
 
     // Goal editing and deletion functions
-    function editGoal(id) {
-      let goal = goals.find(g => g.id === id);
-      if (goal) {
-        const plainTitle = goal.title.replace(/<span class='dollar'>(\$[0-9]+(\.[0-9]+)?)<\/span>/g, '$1');
-        let newTitle = prompt("Edit goal title:", plainTitle);
-        if (newTitle === null) return;
-        newTitle = newTitle.trim();
-        if (newTitle === "") newTitle = plainTitle;
-        const processedTitle = newTitle.replace(/(\$\d+(\.\d+)?)/g, "<span class='dollar'>$1</span>");
+      function editGoal(id) {
+        let goal = goals.find(g => g.id === id);
+        if (goal) {
+          let newTitle = prompt("Edit goal title:", goal.title);
+          if (newTitle === null) return;
+          newTitle = newTitle.trim();
+          if (newTitle === "") newTitle = goal.title;
 
-        const plainDesc = goal.description.replace(/<span class='dollar'>(\$[0-9]+(\.[0-9]+)?)<\/span>/g, '$1');
-        let newDesc = prompt("Edit goal description:", plainDesc);
-        if (newDesc === null) return;
-        const processedDesc = (newDesc || "").replace(/(\$\d+(\.\d+)?)/g, "<span class='dollar'>$1</span>");
+          let newDesc = prompt("Edit goal description:", goal.description);
+          if (newDesc === null) return;
 
         let newCurrent = promptNumber("Edit current saved amount (current: " + goal.current + "):");
         if (newCurrent === null) return;
@@ -582,8 +597,8 @@
           return;
         }
 
-        goal.title = processedTitle;
-        goal.description = processedDesc;
+        goal.title = newTitle;
+        goal.description = newDesc;
         goal.current = newCurrent;
         goal.target = newTarget;
         renderGoals();
@@ -670,12 +685,10 @@
         alert("Target must be greater than 0.");
         return;
       }
-      const processedTitle = title.trim().replace(/(\$\d+(\.\d+)?)/g, "<span class='dollar'>$1</span>");
-      const processedDescription = (description || "").replace(/(\$\d+(\.\d+)?)/g, "<span class='dollar'>$1</span>");
       const newGoal = {
         id: generateId(),
-        title: processedTitle,
-        description: processedDescription,
+        title: title.trim(),
+        description: description || "",
         current: current,
         target: target
       };
