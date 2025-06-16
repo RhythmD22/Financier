@@ -354,7 +354,11 @@
 
     // Goals and Categories stored in localStorage
     let storedGoals = localStorage.getItem('goals');
-      let goals = storedGoals ? JSON.parse(storedGoals) : [
+    let goals = storedGoals ? JSON.parse(storedGoals).map(g => ({
+        ...g,
+        title: sanitizeText(g.title),
+        description: g.description ? sanitizeText(g.description) : ""
+      })) : [
         { id: 1, title: "Emergency Fund", description: "Save $1000 by December 2025", current: 450, target: 1000 }
       ];
 
