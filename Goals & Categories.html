@@ -347,9 +347,18 @@
       });
     }
 
+    // Strip any HTML tags from user-provided text
+    function sanitizeText(text) {
+      return text.replace(/<[^>]*>/g, '');
+    }
+
     // Goals and Categories stored in localStorage
     let storedGoals = localStorage.getItem('goals');
-      let goals = storedGoals ? JSON.parse(storedGoals) : [
+    let goals = storedGoals ? JSON.parse(storedGoals).map(g => ({
+        ...g,
+        title: sanitizeText(g.title),
+        description: g.description ? sanitizeText(g.description) : ""
+      })) : [
         { id: 1, title: "Emergency Fund", description: "Save $1000 by December 2025", current: 450, target: 1000 }
       ];
 
@@ -581,11 +590,12 @@
         if (goal) {
           let newTitle = prompt("Edit goal title:", goal.title);
           if (newTitle === null) return;
-          newTitle = newTitle.trim();
+          newTitle = sanitizeText(newTitle.trim());
           if (newTitle === "") newTitle = goal.title;
 
           let newDesc = prompt("Edit goal description:", goal.description);
           if (newDesc === null) return;
+          newDesc = sanitizeText(newDesc.trim());
 
         let newCurrent = promptNumber("Edit current saved amount (current: " + goal.current + "):");
         if (newCurrent === null) return;
@@ -687,8 +697,8 @@
       }
       const newGoal = {
         id: generateId(),
-        title: title.trim(),
-        description: description || "",
+        title: sanitizeText(title.trim()),
+        description: description ? sanitizeText(description.trim()) : "",
         current: current,
         target: target
       };
