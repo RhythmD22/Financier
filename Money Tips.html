@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Financier – Money Tips</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
@@ -130,6 +131,56 @@
       max-width: 700px;
       z-index: 9999;
     }
+
+    @media (max-width: 768px) {
+      .categories-wrapper {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        max-width: 100%;
+        margin: 0 0 1rem 0;
+      }
+      
+      .category-button {
+        min-width: auto;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+      }
+      
+      .category-icon {
+        width: 20px;
+        height: 20px;
+      }
+      
+      .page-header {
+        padding-right: 0;
+        margin-bottom: 0.5rem;
+      }
+      
+      .page-title {
+        font-size: 1.3rem;
+      }
+      
+      .arrow-line {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .tips-row-inner {
+        gap: 1rem;
+      }
+      
+      .tip-card {
+        min-width: 200px;
+        padding: 1.2rem;
+        font-size: 0.95rem;
+      }
+      
+      .main-content {
+        padding: 1rem;
+      }
+    }
     .category-button {
       display: inline-flex;
       align-items: center;
@@ -193,8 +244,14 @@
 </head>
 <body>
   <div class="container">
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="hamburger">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </button
  <!-- SIDEBAR -->
- <div class="sidebar">
+<div class="sidebar" id="sidebar">
   <h2 style="display: flex; align-items: center;">
     <img src="favicon.ico" alt="Financier Logo" style="width:24px; height:24px; margin-right:8px; vertical-align:middle;">
     Financier
@@ -618,6 +675,16 @@
         const activeCategory = document.querySelector('.category-button.active').getAttribute('data-category');
         updateTips(activeCategory);
       }, 50);
+    });
+  </script>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      hamburger.classList.toggle('active');
     });
   </script>
 </body>
