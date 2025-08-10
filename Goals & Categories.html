@@ -134,6 +134,21 @@
     .budget-amount {
       font-size: 1.3rem;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    #prevMonth, #nextMonth {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      height: auto;
+      vertical-align: middle;
+    }
+    #currentMonthYear {
+      vertical-align: middle;
     }
 
     /* EXPENSE CATEGORIES SECTION */
@@ -173,7 +188,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      line-height: 0;
+      line-height: 1;
+      height: auto;
+      vertical-align: middle;
     }
     @media (hover: hover) {
       .icon-btn:hover {
@@ -215,6 +232,12 @@
       }
       .icon-btn {
         padding: 0.4rem 0.6rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        height: auto;
+        vertical-align: middle;
       }
       .icon-btn svg {
         width: 16px;
