@@ -188,63 +188,40 @@
     }
 
     /* RESPONSIVE */
-@media (max-width: 768px) {
-  .main-content {
-    padding: 1rem;
-    overflow-x: hidden;
-  }
-  
-  /* Remove hover effects completely for mobile */
-  @media (max-width: 768px) {
-    #prevMonth:hover, #nextMonth:hover,
-    .prevCatMonth:hover, .nextCatMonth:hover,
-    .btn-blue:hover,
-    .icon-btn:hover {
-      color: inherit !important;
-      background-color: inherit !important;
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+        overflow-x: hidden;
+      }
+      .page-title {
+        font-size: 1.2rem;
+      }
+      .section-header h2 {
+        font-size: 1rem;
+      }
+      .goal-card, .monthly-budget-card, .category-card {
+        padding: 0.75rem;
+      }
+      .goal-info h4, .category-info h4 {
+        font-size: 0.9rem;
+      }
+      .goal-info p, .category-info p {
+        font-size: 0.8rem;
+      }
+      .budget-amount {
+        font-size: 1.1rem;
+      }
+      .icon-btn {
+        padding: 0.4rem 0.6rem;
+      }
+      .icon-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .progress-bar-bg {
+        height: 6px;
+      }
     }
-  }
-  .page-title {
-    font-size: 1.2rem;
-  }
-  .section-header h2 {
-    font-size: 1rem;
-  }
-  .goal-card, .monthly-budget-card, .category-card {
-    padding: 0.75rem;
-  }
-  .goal-info h4, .category-info h4 {
-    font-size: 0.9rem;
-  }
-  .goal-info p, .category-info p {
-    font-size: 0.8rem;
-  }
-  .budget-amount {
-    font-size: 1.1rem;
-  }
-  .icon-btn {
-    padding: 0.4rem 0.6rem;
-  }
-  .icon-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-  .progress-bar-bg {
-    height: 6px;
-  }
-
-  /* Remove hover states for mobile */
-  .icon-btn:hover {
-    color: #9CA3AF !important;
-    background-color: #2D2F34 !important;
-  }
-  .monthly-budget-card button:hover {
-    color: inherit !important;
-  }
-  .category-card button:hover {
-    color: inherit !important;
-  }
-}
 
     .monthly-budget-card button:hover {
       color: #508de6 !important;
@@ -770,17 +747,6 @@
     renderGoals();
     renderCategories();
     updateAnalytics();
-
-    // Remove hover effects on mobile by preventing default behavior
-    if (window.matchMedia('(max-width: 768px)').matches) {
-      const preventHover = (e) => {
-        e.preventDefault();
-      };
-      
-      document.querySelectorAll('#prevMonth, #nextMonth, .prevCatMonth, .nextCatMonth, .btn-blue, .icon-btn').forEach(btn => {
-        btn.addEventListener('touchstart', preventHover);
-      });
-    }
   </script>
   <script>
     // Hamburger menu toggle
