@@ -193,6 +193,12 @@
     padding: 1rem;
     overflow-x: hidden;
   }
+  
+  /* Disable hover effects after touch */
+  .no-hover:hover {
+    color: inherit !important;
+    background-color: inherit !important;
+  }
   .page-title {
     font-size: 1.2rem;
   }
@@ -759,6 +765,28 @@
     renderGoals();
     renderCategories();
     updateAnalytics();
+
+    // Disable hover effects after touch on mobile
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      const disableHover = (e) => {
+        e.target.classList.add('no-hover');
+      };
+      
+      // Navigation buttons
+      document.querySelectorAll('#prevMonth, #nextMonth, .prevCatMonth, .nextCatMonth').forEach(btn => {
+        btn.addEventListener('touchstart', disableHover);
+      });
+      
+      // Blue buttons
+      document.querySelectorAll('.btn-blue').forEach(btn => {
+        btn.addEventListener('touchstart', disableHover);
+      });
+      
+      // Icon buttons
+      document.querySelectorAll('.icon-btn').forEach(btn => {
+        btn.addEventListener('touchstart', disableHover);
+      });
+    }
   </script>
   <script>
     // Hamburger menu toggle
