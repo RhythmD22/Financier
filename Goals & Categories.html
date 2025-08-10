@@ -175,9 +175,11 @@
       justify-content: center;
       line-height: 0;
     }
-    .icon-btn:hover {
-      color: #FFFFFF;
-      background-color: #3A3D42;
+    @media (hover: hover) {
+      .icon-btn:hover {
+        color: #FFFFFF;
+        background-color: #3A3D42;
+      }
     }
     .icon-btn svg {
       width: 18px;
@@ -223,11 +225,15 @@
       }
     }
 
-    .monthly-budget-card button:hover {
-      color: #508de6 !important;
+    @media (hover: hover) {
+      .monthly-budget-card button:hover {
+        color: #508de6 !important;
+      }
     }
-    .category-card button:hover {
-      color: #508de6 !important;
+    @media (hover: hover) {
+      .category-card button:hover {
+        color: #508de6 !important;
+      }
     }
   </style>
 
