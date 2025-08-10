@@ -124,7 +124,7 @@ html, body {
     display: flex;
   }
 
-  .sidebar {
+.sidebar {
     position: fixed;
     top: 0;
     left: -100%;
@@ -135,7 +135,8 @@ html, body {
     transition: left 0.3s ease;
     z-index: 100;
     overflow-y: auto;
-  }
+    overscroll-behavior: contain;
+}
 
   .sidebar.active {
     left: 0;
