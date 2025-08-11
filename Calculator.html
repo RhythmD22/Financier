@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Financier – Calculator</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
@@ -195,13 +196,66 @@
         height: auto;
       }
     }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+      .page-title {
+        font-size: 1.2rem;
+      }
+      .calc-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .calculator-container {
+        min-height: 500px;
+        width: 100%;
+        padding: 0.75rem;
+      }
+      .history-panel {
+        width: 100%;
+        padding: 0.75rem;
+      }
+      .illustration {
+        display: none;
+      }
+      .calculator-display {
+        font-size: 1.2rem;
+        padding: 0.75rem;
+      }
+      .calculator-buttons {
+        gap: 0.5rem;
+      }
+      .calc-btn {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+      }
+      .history-header h3 {
+        font-size: 0.9rem;
+      }
+      #clearHistoryBtn {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+      }
+      .history-list {
+        font-size: 0.8rem;
+      }
+    }
   </style>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="hamburger">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </button
  <!-- SIDEBAR -->
- <div class="sidebar">
+<div class="sidebar" id="sidebar">
   <h2 style="display: flex; align-items: center;">
     <img src="favicon.ico" alt="Financier Logo" style="width:24px; height:24px; margin-right:8px; vertical-align:middle;">
     Financier
@@ -264,6 +318,13 @@
         </svg>
       <span class="nav-text">Money Tips</span>
     </a>
+  </div>
+  <!-- Swipe Indicator -->
+  <div class="swipe-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Swipe to close</span>
   </div>
   <div class="sidebar-footer" style="color: gray; font-size: 0.8rem; text-align: center; margin-top: auto;">
     <p>Made with ❤️ at the</p>
@@ -464,6 +525,55 @@
 
     loadCalcHistory();
     clearAll();
+  </script>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    });
+
+    // Swipe to close sidebar functionality
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 50; // Minimum distance to register as a swipe
+
+    // Add touch event listeners to the sidebar for swipe detection
+    sidebar.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    sidebar.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      
+      // Check if it's a left swipe (negative direction) and meets minimum distance
+      if (swipeDistance < -minSwipeDistance) {
+        // Only close sidebar if it's currently open
+        if (sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          hamburger.classList.remove('active');
+        }
+      }
+    }
+
+    // Optional: Add swipe detection to the entire container for better UX
+    const container = document.querySelector('.container');
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
   </script>
 </body>
 </html>

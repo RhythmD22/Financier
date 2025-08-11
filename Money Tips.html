@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Financier – Money Tips</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
@@ -130,6 +131,56 @@
       max-width: 700px;
       z-index: 9999;
     }
+
+    @media (max-width: 768px) {
+      .categories-wrapper {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        max-width: 100%;
+        margin: 0 0 1rem 0;
+      }
+      
+      .category-button {
+        min-width: auto;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+      }
+      
+      .category-icon {
+        width: 20px;
+        height: 20px;
+      }
+      
+      .page-header {
+        padding-right: 0;
+        margin-bottom: 0.5rem;
+      }
+      
+      .page-title {
+        font-size: 1.3rem;
+      }
+      
+      .arrow-line {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .tips-row-inner {
+        gap: 1rem;
+      }
+      
+      .tip-card {
+        min-width: 200px;
+        padding: 1.2rem;
+        font-size: 0.95rem;
+      }
+      
+      .main-content {
+        padding: 1rem;
+      }
+    }
     .category-button {
       display: inline-flex;
       align-items: center;
@@ -193,8 +244,14 @@
 </head>
 <body>
   <div class="container">
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="hamburger">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </button
  <!-- SIDEBAR -->
- <div class="sidebar">
+<div class="sidebar" id="sidebar">
   <h2 style="display: flex; align-items: center;">
     <img src="favicon.ico" alt="Financier Logo" style="width:24px; height:24px; margin-right:8px; vertical-align:middle;">
     Financier
@@ -257,6 +314,13 @@
         </svg>
       <span class="nav-text">Money Tips</span>
     </a>
+  </div>
+  <!-- Swipe Indicator -->
+  <div class="swipe-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Swipe to close</span>
   </div>
   <div class="sidebar-footer" style="color: gray; font-size: 0.8rem; text-align: center; margin-top: auto;">
     <p>Made with ❤️ at the</p>
@@ -619,6 +683,55 @@
         updateTips(activeCategory);
       }, 50);
     });
+  </script>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    });
+
+    // Swipe to close sidebar functionality
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 50; // Minimum distance to register as a swipe
+
+    // Add touch event listeners to the sidebar for swipe detection
+    sidebar.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    sidebar.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      
+      // Check if it's a left swipe (negative direction) and meets minimum distance
+      if (swipeDistance < -minSwipeDistance) {
+        // Only close sidebar if it's currently open
+        if (sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          hamburger.classList.remove('active');
+        }
+      }
+    }
+
+    // Optional: Add swipe detection to the entire container for better UX
+    const container = document.querySelector('.container');
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
   </script>
 </body>
 </html>
