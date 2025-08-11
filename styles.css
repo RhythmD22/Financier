@@ -182,4 +182,45 @@ html, body {
   .page-title {
     padding-left: 50px; /* Add left padding to avoid overlap with hamburger */
   }
+
+  /* Mobile swipe indicator */
+  .swipe-indicator {
+    position: fixed;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #2D2F34;
+    color: #9CA3AF;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 101;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  .swipe-indicator:hover {
+    opacity: 1;
+  }
+
+  .swipe-indicator svg {
+    width: 16px;
+    height: 16px;
+    animation: swipePulse 2s infinite;
+  }
+
+  @keyframes swipePulse {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-3px); }
+  }
+
+  /* Only show on mobile when sidebar is active */
+  @media (max-width: 768px) {
+    .sidebar.active + .swipe-indicator {
+      display: flex;
+    }
+  }
 }
