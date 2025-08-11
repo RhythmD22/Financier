@@ -183,27 +183,17 @@ html, body {
     padding-left: 50px; /* Add left padding to avoid overlap with hamburger */
   }
 
-  /* Mobile swipe indicator */
+  /* Swipe indicator inside sidebar */
   .swipe-indicator {
-    position: fixed;
-    right: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #2D2F34;
-    color: #9CA3AF;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0 6px 6px 0;
-    font-size: 0.75rem;
-    display: flex;
     align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    color: #9CA3AF;
+    font-size: 0.75rem;
+    border-top: 1px solid #2d2f34;
+    border-bottom: 1px solid #2d2f34;
     gap: 0.5rem;
-    z-index: 101;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-  }
-
-  .swipe-indicator:hover {
-    opacity: 1;
   }
 
   .swipe-indicator svg {
@@ -216,11 +206,18 @@ html, body {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(-3px); }
   }
+}
 
-  /* Only show on mobile when sidebar is active */
-  @media (max-width: 768px) {
-    .sidebar.active + .swipe-indicator {
-      display: flex;
-    }
+/* Show swipe indicator only on mobile */
+@media (max-width: 768px) {
+  .swipe-indicator {
+    display: flex;
+  }
+}
+
+/* Hide swipe indicator on desktop */
+@media (min-width: 769px) {
+  .swipe-indicator {
+    display: none !important;
   }
 }
