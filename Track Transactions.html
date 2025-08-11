@@ -662,6 +662,14 @@
     localStorage.setItem('mealPlans', JSON.stringify(mealPlans));
     localStorage.setItem('categories', JSON.stringify(categories));
   }
+  
+  // Listen for storage changes from other tabs
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'mealPlans') {
+      mealPlans = loadMealPlans();
+      renderMealPlans();
+    }
+  });
 
   /* Shared Categories Data */
   let storedCategories = localStorage.getItem('categories');
@@ -930,19 +938,23 @@ function parseLocalDateString(dateString) {
   });
 
   /* Meal Plan Functionality */
-  let storedMealPlans = localStorage.getItem('mealPlans');
-  let mealPlans = storedMealPlans
-    ? JSON.parse(storedMealPlans)
-    : [
-        {
-          id: "default",
-          title: "Meal Plan",
-          category:
-            "For accurate analytics, please use consistent category names across all entries (expenses, incomes, and meal plans). For example, if you label an expense as ‘Groceries,’ use ‘Groceries’ for your meal plan category as well.",
-          description: "",
-          deductions: []
-        }
-      ];
+  function loadMealPlans() {
+    let storedMealPlans = localStorage.getItem('mealPlans');
+    return storedMealPlans
+      ? JSON.parse(storedMealPlans)
+      : [
+          {
+            id: "default",
+            title: "Meal Plan",
+            category:
+              "For accurate analytics, please use consistent category names across all entries (expenses, incomes, and meal plans). For example, if you label an expense as ‘Groceries,’ use ‘Groceries’ for your meal plan category as well.",
+            description: "",
+            deductions: []
+          }
+        ];
+  }
+  
+  let mealPlans = loadMealPlans();
 
   let currentEditingPlanId = null;
 
@@ -1025,7 +1037,19 @@ function parseLocalDateString(dateString) {
       date: date
     };
     expenses.push(newExpense);
-    renderTransactions();
+    
+    // Update week view if the deduction is in a different week
+    const newDateObj = parseLocalDateString(date);
+    const newWeekStart = getMonday(newDateObj);
+    if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+      currentWeekStart = newWeekStart;
+      localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
+      updateWeekHeading();
+      renderTransactions();
+    } else {
+      renderTransactions(); // Still need to re-render to show the new expense
+    }
+    
     renderMealPlans();
     saveData();
   }
@@ -1109,6 +1133,15 @@ function parseLocalDateString(dateString) {
   renderTransactions();
   renderMealPlans();
   saveData();
+  
+  // Refresh data when page becomes visible (e.g., after import in Analytics.html)
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+      // Reload meal plans from localStorage
+      mealPlans = loadMealPlans();
+      renderMealPlans();
+    }
+  });
 </script>
 <script>
   // Hamburger menu toggle

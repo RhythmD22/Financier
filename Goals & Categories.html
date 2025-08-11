@@ -589,10 +589,11 @@
       
       categories.forEach(cat => {
         // Initialize the category's monthly budget if not already set
-        if (categoryBudgets[monthKey][cat.id] === undefined) {
-          categoryBudgets[monthKey][cat.id] = cat.budget;
+        const catIdStr = String(cat.id);
+        if (categoryBudgets[monthKey][catIdStr] === undefined) {
+          categoryBudgets[monthKey][catIdStr] = cat.budget;
         }
-        const budgetThisMonth = categoryBudgets[monthKey][cat.id];
+        const budgetThisMonth = categoryBudgets[monthKey][catIdStr];
         
         // Create the category card
         const card = document.createElement('div');
@@ -710,12 +711,13 @@
           categoryBudgets[monthKey] = {};
         }
         
-        let currentBudget = categoryBudgets[monthKey][cat.id] !== undefined ? categoryBudgets[monthKey][cat.id] : cat.budget;
+        const catIdStr = String(cat.id);
+        let currentBudget = categoryBudgets[monthKey][catIdStr] !== undefined ? categoryBudgets[monthKey][catIdStr] : cat.budget;
         let newBudget = promptNumber("Edit monthly budget for " + cat.name + " (current: " + currentBudget + "):");
         if (newBudget === null) return;
 
         // Update the budget in the categoryBudgets for the current month
-        categoryBudgets[monthKey][cat.id] = newBudget;
+        categoryBudgets[monthKey][catIdStr] = newBudget;
         localStorage.setItem('categoryBudgets', JSON.stringify(categoryBudgets));
         renderCategories();
         updateAnalytics();
@@ -748,7 +750,7 @@
       if (!categoryBudgets[monthKey]) {
         categoryBudgets[monthKey] = {};
       }
-      categoryBudgets[monthKey][newCat.id] = budget;
+      categoryBudgets[monthKey][String(newCat.id)] = budget;
       localStorage.setItem('categoryBudgets', JSON.stringify(categoryBudgets));
       
       renderCategories();
