@@ -20,7 +20,6 @@ text-decoration: none;
 color: inherit;
 }
 button {
-cursor: pointer;
 border: none;
 outline: none;
 background: none;
@@ -444,6 +443,14 @@ transition: background 0.2s ease;
 }
 .export-btn:hover {
 background-color: #2D6FE4;
+cursor: pointer;
+}
+
+@media (hover: none) {
+  .export-btn:hover {
+    background-color: #1043B1;
+    cursor: pointer;
+  }
 }
 
 </style>
