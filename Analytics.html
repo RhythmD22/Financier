@@ -172,21 +172,17 @@
       justify-content: center;
       min-width: 30px;
       min-height: 30px;
+      -webkit-tap-highlight-color: transparent;
     }
-    .week-arrow:hover {
-      background-color: #3A3D42;
-    }
-
-    /* Fix for hover states persisting on mobile after touch */
+    
     @media (hover: hover) {
       .week-arrow:hover {
         background-color: #3A3D42;
       }
     }
-
-    /* Remove hover state immediately after touch on mobile */
-    .week-arrow.touched {
-      background-color: #2D2F34 !important;
+    
+    .week-arrow:active {
+      background-color: #3A3D42;
     }
     .week-label {
       font-size: 0.9rem;
@@ -410,13 +406,18 @@
       }
     }
 
-  #toggleCategoryView:hover, #toggleMonthlyView:hover {
-    color: #508de6 !important;
+  #toggleCategoryView, #toggleMonthlyView {
+    -webkit-tap-highlight-color: transparent;
   }
-
-  /* Remove hover state immediately after touch on mobile */
-  #toggleCategoryView.touched, #toggleMonthlyView.touched {
-    color: #FFFFFF !important;
+  
+  @media (hover: hover) {
+    #toggleCategoryView:hover, #toggleMonthlyView:hover {
+      color: #508de6 !important;
+    }
+  }
+  
+  #toggleCategoryView:active, #toggleMonthlyView:active {
+    color: #508de6 !important;
   }
 
   .page-header {
@@ -694,10 +695,6 @@
   // Retrieve the month-specific category budgets
   let categoryBudgets = JSON.parse(localStorage.getItem('categoryBudgets')) || {};
 
-  /* For toggling weekly and monthly category views */
-  let categoryView = 'spending';
-  let monthlyCategoryView = 'spending';
-
   document.addEventListener('DOMContentLoaded', () => {
     const toggleCategoryView = document.getElementById('toggleCategoryView');
     const toggleMonthlyView = document.getElementById('toggleMonthlyView');
@@ -714,23 +711,6 @@
       document.getElementById('monthlyCardTitle').textContent =
         (monthlyCategoryView === 'spending') ? 'Monthly Spending by Category:' : 'Monthly Income by Category:';
       updateMonthlyCategoryCards();
-    });
-
-    // Remove hover state immediately after touch on mobile for arrow buttons
-    [toggleCategoryView, toggleMonthlyView].forEach(btn => {
-      btn.addEventListener('touchstart', () => {
-        btn.classList.add('touched');
-      });
-
-      btn.addEventListener('touchend', () => {
-        setTimeout(() => {
-          btn.classList.remove('touched');
-        }, 100);
-      });
-
-      btn.addEventListener('touchcancel', () => {
-        btn.classList.remove('touched');
-      });
     });
   });
 
@@ -760,23 +740,6 @@
     currentWeekStart.setDate(currentWeekStart.getDate() + 7);
     localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
     updateAnalytics();
-  });
-
-  // Remove hover state immediately after touch on mobile
-  [prevWeekBtn, nextWeekBtn].forEach(btn => {
-    btn.addEventListener('touchstart', () => {
-      btn.classList.add('touched');
-    });
-
-    btn.addEventListener('touchend', () => {
-      setTimeout(() => {
-        btn.classList.remove('touched');
-      }, 100);
-    });
-
-    btn.addEventListener('touchcancel', () => {
-      btn.classList.remove('touched');
-    });
   });
 
   // Save data to localStorage
