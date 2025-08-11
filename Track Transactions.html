@@ -1037,7 +1037,19 @@ function parseLocalDateString(dateString) {
       date: date
     };
     expenses.push(newExpense);
-    renderTransactions();
+    
+    // Update week view if the deduction is in a different week
+    const newDateObj = parseLocalDateString(date);
+    const newWeekStart = getMonday(newDateObj);
+    if (newWeekStart.getTime() !== currentWeekStart.getTime()) {
+      currentWeekStart = newWeekStart;
+      localStorage.setItem('currentWeekStart', currentWeekStart.toISOString());
+      updateWeekHeading();
+      renderTransactions();
+    } else {
+      renderTransactions(); // Still need to re-render to show the new expense
+    }
+    
     renderMealPlans();
     saveData();
   }
