@@ -1274,6 +1274,7 @@ function exportCSV() {
             deductions: []
         }
     ];
+    let calculatorHistory = JSON.parse(localStorage.getItem('calcHistory')) || [];
     let currentWeekStart = localStorage.getItem('currentWeekStart') || '';
 
     let csvContent = '';
@@ -1339,6 +1340,13 @@ function exportCSV() {
     });
     csvContent += '\n';
 
+    // Calculator History Section
+    csvContent += 'Calculation\n';
+    calculatorHistory.forEach(entry => {
+        csvContent += `${escapeCSVField(entry)}\n`;
+    });
+    csvContent += '\n';
+
     // Additional Information
     csvContent += `Current Week Start,${currentWeekStart}\n`;
     csvContent += `Exported On,${new Date().toISOString()}\n`;
@@ -1393,6 +1401,7 @@ function parseCSVData(csvData) {
             deductions: []
         }
     ]; // Start with default meal plan
+    let newCalculatorHistory = []; // New array for calculator history
     let newCurrentWeekStart = '';
     
     // Split CSV into lines
@@ -1422,6 +1431,9 @@ function parseCSVData(csvData) {
             continue;
         } else if (line === 'Meal Plan ID,Title,Category,Description,Deductions') {
             section = 'mealPlans';
+            continue;
+        } else if (line === 'Calculation') {
+            section = 'calculatorHistory';
             continue;
         } else if (line.startsWith('Current Week Start,')) {
             section = 'metadata';
@@ -1565,6 +1577,13 @@ function parseCSVData(csvData) {
                 }
                 break;
                 
+            case 'calculatorHistory':
+                if (values.length >= 1) {
+                    const [calculation] = values;
+                    newCalculatorHistory.push(calculation || '');
+                }
+                break;
+                
             case 'metadata':
                 if (values[0] === 'Current Week Start') {
                     newCurrentWeekStart = values[1];
@@ -1583,6 +1602,7 @@ function parseCSVData(csvData) {
         localStorage.setItem('categoryBudgets', JSON.stringify(newCategoryBudgets));
         localStorage.setItem('goals', JSON.stringify(newGoals)); // Save goals
         localStorage.setItem('mealPlans', JSON.stringify(newMealPlans)); // Save meal plans
+        localStorage.setItem('calcHistory', JSON.stringify(newCalculatorHistory)); // Save calculator history
         if (newCurrentWeekStart) {
             localStorage.setItem('currentWeekStart', newCurrentWeekStart);
         }
