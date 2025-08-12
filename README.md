@@ -24,7 +24,7 @@ Financier is a lightweight web application that helps college students track spe
 - **Money Tips:** Browse practical budgeting advice.
 - **Calculator:** Perform calculations without leaving the app.
 
-All data is saved in your browser via `localStorage` and can be exported as CSV.
+All data is saved in your browser via `localStorage` and can be exported to or imported from CSV.
 
 ## Features
 
@@ -33,7 +33,7 @@ All data is saved in your browser via `localStorage` and can be exported as CSV.
 - **Visual Summaries:** View weekly and monthly overviews of spending and income through charts.
 - **Built-in Calculator:** Perform financial calculations without leaving the app.
 - **Budgeting Tips:** Receive practical financial advice tailored to college students.
-- **Local Data Storage:** Data is saved in the browser and can be exported as a CSV file.
+- **Local Data Storage:** Data is saved in the browser and can be exported to or imported from a CSV file.
 
 ## Technology Stack
 
