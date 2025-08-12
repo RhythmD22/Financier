@@ -74,6 +74,13 @@
       background-color: #2D6FE4;
     }
 
+    /* Disable hover effects on touch devices */
+    @media (hover: none) {
+      .btn-primary:hover {
+        background-color: #1043B1; /* Revert to original background color */
+      }
+    }
+
     /* FEATURE CARDS */
     .feature-cards {
       display: flex;
