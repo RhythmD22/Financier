@@ -190,9 +190,17 @@ body {
   }
 
   /* Adjust page title position on mobile to avoid overlap */
-  .page-title {
-    padding-left: 50px;
-    /* Add left padding to avoid overlap with hamburger */
+  @media (max-width: 768px) {
+    h1.page-title:not(.top-section h1.page-title) {
+      position: fixed;
+      top: 15px;
+      left: 50px;
+      padding-left: 0;
+    }
+    
+    .main-content {
+      padding-top: 50px;
+    }
   }
 
   /* Swipe indicator inside sidebar */
