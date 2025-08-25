@@ -196,6 +196,7 @@ body {
       top: 15px;
       left: 50px;
       padding-left: 0;
+      z-index: 102;
     }
     
     .main-content {
