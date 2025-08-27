@@ -4,8 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Smart Finance Management for Students">
+  <meta name="theme-color" content="#1043B1">
+
+  <!-- iOS specific meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Financier">
+
   <title>Financier – Goals & Categories</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="PWA%20icon.png">
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(function (registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(function (err) {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  </script>
+
   <style>
     /* RESET & BASE STYLES */
     * {
@@ -91,6 +117,8 @@
     .goal-info p {
       font-size: 0.85rem;
       color: #A3A3A3;
+      min-height: 1.2rem;
+      /* Ensures consistent height whether there's text or not */
     }
 
     .goal-progress {
@@ -597,8 +625,13 @@
         highlightDollarAmounts(h4);
         info.appendChild(h4);
         const pDesc = document.createElement('p');
-        pDesc.textContent = goal.description;
-        highlightDollarAmounts(pDesc);
+        if (goal.description && goal.description.trim() !== "") {
+          pDesc.textContent = goal.description;
+          highlightDollarAmounts(pDesc);
+        } else {
+          // Maintain spacing even when there's no description
+          pDesc.innerHTML = "&nbsp;"; // Non-breaking space to maintain height
+        }
         info.appendChild(pDesc);
 
         const progressContainer = document.createElement('div');
@@ -900,6 +933,7 @@
       handleSwipe();
     }, { passive: true });
   </script>
+  <script src="navigation.js"></script>
 </body>
 
 </html>
