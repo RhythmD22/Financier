@@ -164,6 +164,14 @@ button {
   background-color: #dc2626;
 }
 
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+  #clearHistoryBtn:hover {
+    background-color: #EF4444;
+    /* Revert to original background color */
+  }
+}
+
 .history-list {
   font-size: 0.9rem;
   line-height: 1.4;
