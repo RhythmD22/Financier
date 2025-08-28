@@ -213,7 +213,7 @@ button {
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 1rem;
+    padding: 60px 1rem 1rem;
   }
 
   .page-title {
