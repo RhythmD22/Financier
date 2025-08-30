@@ -1,7 +1,7 @@
 // Mapping of categories to their corresponding colors.
 const categoryColors = {
   "textbooks": "#5C6BC0",
-  "food-dining": "#FF9800",
+  "food": "#FF9800",
   "shopping-smart": "#4CAF50",
   "finance": "#f1bd41",
   "transportation": "#00BCD4",
@@ -187,7 +187,7 @@ const tipsBank = {
     "Plan themed nights with potlucks.",
     "Look for deals on Groupon or local apps.",
     "Follow local social media for free/cheap events."
-  ]
+  ],
 };
 
 // Utility: shuffle an array in place.
