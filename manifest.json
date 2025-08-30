@@ -13,8 +13,18 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/Financier/PWA%20icon.png",
+      "src": "/Financier/apple-touch-icon.png",
       "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/Financier/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Financier/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]

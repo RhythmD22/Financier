@@ -26,7 +26,9 @@ const urlsToCache = [
   '/Financier/js/money-tips.js',
   '/Financier/js/navigation.js',
   '/Financier/favicon.ico',
-  '/Financier/PWA%20icon.png',
+  '/Financier/apple-touch-icon.png',
+  '/Financier/android-chrome-192x192.png',
+  '/Financier/android-chrome-512x512.png',
   '/Financier/Images/undraw_calculator.png',
   '/Financier/Images/undraw_online-calendar.png'
 ];
