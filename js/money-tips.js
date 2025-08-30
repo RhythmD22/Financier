@@ -1,6 +1,6 @@
 // Mapping of categories to their corresponding colors.
 const categoryColors = {
-  "textbook": "#5C6BC0",
+  "textbooks": "#5C6BC0",
   "food-dining": "#FF9800",
   "shopping-smart": "#4CAF50",
   "finance": "#f1bd41",
@@ -12,7 +12,7 @@ const categoryColors = {
 
 // Bank of money-saving tips per category.
 const tipsBank = {
-  "textbook": [
+  "textbooks": [
     "Buy used textbooks whenever possible.",
     "Rent textbooks instead of purchasing.",
     "Share books with a classmate.",
@@ -258,12 +258,12 @@ document.querySelectorAll('.category-button').forEach(button => {
 
 // Initialize default category on page load.
 window.addEventListener('DOMContentLoaded', () => {
-  updateTips('textbook');
-  const defaultBtn = document.querySelector('.category-button[data-category="textbook"]');
+  updateTips('textbooks');
+  const defaultBtn = document.querySelector('.category-button[data-category="textbooks"]');
   defaultBtn.classList.add('active');
-  defaultBtn.style.color = categoryColors["textbook"];
+  defaultBtn.style.color = categoryColors["textbooks"];
   defaultBtn.querySelectorAll('svg path').forEach(path => {
-    path.setAttribute('fill', categoryColors["textbook"]);
+    path.setAttribute('fill', categoryColors["textbooks"]);
   });
 });
 
