@@ -50,10 +50,10 @@ All data is saved in your browser via `localStorage` and can be exported as CSV.
 ## Technology Stack
 
 - **Core Technologies**: HTML5, CSS3, JavaScript (ES6+)
-- **Data Storage**: `localStorage` for client-side data persistence
-- **UI Framework**: Custom CSS with responsive design for mobile and desktop
-- **External Libraries**: Chart.js (loaded via CDN) for data visualization in the Analytics section
-- **PWA Support**: Includes a service worker for offline functionality and installability
+- **Data Storage**: `localStorage` for client-side data persistence.
+- **UI Framework**: Custom CSS with responsive design for mobile and desktop.
+- **External Libraries**: Chart.js (loaded via CDN) for data visualization in the Analytics section.
+- **PWA Support**: Includes a service worker for offline functionality and installability.
 
 ## License
 
