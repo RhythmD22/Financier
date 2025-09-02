@@ -30,7 +30,7 @@ The web app consists of several static HTML pages, each serving a specific funct
 - `index.html`: The main landing page with quick links to other sections.
 - `Goals & Categories.html`: Configure custom categories and set financial goals.
 - `Track Transactions.html`: Record income and expenses for each category.
-- `Analytics.html`: View charts summarizing weekly and monthly spending trends (uses Chart.js for data visualization).
+- `Analytics.html`: View charts summarizing weekly and monthly spending trends.
 - `Calculator.html`: Perform calculations without leaving the app.
 - `Money Tips.html`: Browse practical budgeting advice.
 
